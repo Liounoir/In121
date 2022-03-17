@@ -4,94 +4,97 @@ from tkinter import ttk
 import csv
 from datetime import datetime
 
-def User_inf():
-    User_info='user_info.csv'
 
-    Fichier1=open(User_info,'r')
-    Read= csv.reader(Fichier1)
-    U_inf=[]
-    for row in Read:
-        U_inf.append(row)
-    Fichier1.close()
-    return U_inf
+def User_inf() :
+    user_info = 'user_info.csv'
 
-def login():
-    U_inf=User_inf()
-    Password= Entrée2.get()
-    Name= Entrée1.get()
-    for i in range(len(U_inf)):
-        print(U_inf[i][1])
-        print(Name)
-        if Name==U_inf[i][1] and Password==U_inf[i][2]:
-            ttk.Label(programme, text="Bienvenue dans la matrice",background = "#89ed80").place(x=330,y=160)
-            date=datetime.now().date()
-            time=datetime.now().time()
-            Log=open('user_login.csv','a',newline='',encoding='utf_8')
-            Write= csv.writer(Log)
-            Write.writerow([U_inf[i][0],U_inf[i][1],date,time])
-            Log.close()
-            return 'login succesful'
-        else:
+    fichier1 = open(user_info , 'r')
+    read = csv.reader(fichier1)
+    u_inf = []
+    for row in read :
+        u_inf.append(row)
+    fichier1.close()
+    return u_inf
 
-            ttk.Label(programme, text="Pillule rouge",background = "#ff2626").place(x=365,y=160)
+
+def login() :
+    u_inf = User_inf()
+    password = Entrée2.get()
+    name = Entrée1.get()
+    for i in range(len(u_inf)) :
+        print(u_inf[i][1])
+        print(name)
+        if name == u_inf[i][1] and password == u_inf[i][2] :
+            ttk.Label(programme , text="Bienvenue dans la matrice" , background="#89ed80").place(x=330 , y=160)
+            date = datetime.now().date()
+            time = datetime.now().time()
+            log = open('user_login.csv' , 'a' , newline='' , encoding='utf_8')
+            write = csv.writer(log)
+            write.writerow([u_inf[i][0] , u_inf[i][1] , date , time])
+            log.close()
+            return 'login successful'
+        else :
+            None
+
+    ttk.Label(programme , text="Pillule rouge" , background="#ff2626").place(x=365 , y=160)
+
+
+
+def signup() :
+    u_inf = User_inf()
+    password1 = Entrée4.get()
+    email1 = Entrée3.get()
+
+    for i in range(len(u_inf)) :
+
+        if email1 == u_inf[i][1] :
+            ttk.Label(programme , text="Email déjà utilisé" , background="#ff2626").place(x=355 , y=300)
             return 'error'
 
-def signup():
-    U_inf=User_inf()
-    Password1=Entrée4.get()
-    Email1=Entrée3.get()
+    for i in range(len(u_inf)) :
+        if 6 <= len(password1) <= 12 and email1 != u_inf[i][1] :
+            ttk.Label(programme , text="Utilisateur enregistré" , background="#89ed80").place(x=350 , y=300)
+            sign = open('user_info.csv' , 'a' , newline='' , encoding='utf_8')
+            write1 = csv.writer(sign)
+            write1.writerow([len(u_inf) , email1 , password1])
+            sign.close()
+            return 'signup successful'
 
-    for i in range(len(U_inf)):
-           
-        if Email1==U_inf[i][1]:
-            ttk.Label(programme, text="Email déja utilisé",background = "#ff2626").place(x=355,y=300)
+        else :
+            ttk.Label(programme , text="Le mot de passe doit faire entre 6 et 12 charactères" ,
+                      background="#ff2626").place(x=270 , y=300)
             return 'error'
-        
-    for i in range(len(U_inf)):
-        if 6<=len(Password1)<=12 and Email1!=U_inf[i][1]:
-                ttk.Label(programme, text="Utilisateur enregistré",background = "#89ed80").place(x=350,y=300)
-                Sign=open('user_info.csv','a',newline='',encoding='utf_8')
-                Write1=csv.writer(Sign)
-                Write1.writerow([len(U_inf),Email1,Password1])
-                Sign.close()
-                return 'signup succesful'
-                
-        else:
-            ttk.Label(programme, text="Le mot de passe doit faire entre 6 et 12 charactères",background = "#ff2626").place(x=270,y=300)
-            return 'error'
+
 
 programme = tk.Tk()
 programme.geometry('700x400')
 programme.title("Menu")
 
-password = tk.StringVar()
-name = tk.StringVar()
-password1= tk.StringVar()
-name1= tk.StringVar()
+Password = tk.StringVar()
+Name = tk.StringVar()
+Password1 = tk.StringVar()
+Name1 = tk.StringVar()
 
+label = tk.Label(programme , text='FLIGHT ANALYSES SYSTEM')
+label.configure(font=("Courier" , 16 , "italic"))
+label.place(x=255 , y=10)
 
-label = tk.Label(programme,text='FLIGHT ANALYSES SYSTEM')
-label.configure(font=("Courier", 16, "italic"))
-label.place(x=255, y=10)
+Entrée1 = ttk.Entry(programme , width=50 , textvariable=Name)
+Entrée2 = ttk.Entry(programme , width=50 , textvariable=Password)
+Entrée1.place(x=250 , y=60)
+Entrée2.place(x=250 , y=90)
+tk.Label(programme , text="Email" , background="#176cd4" , fg="white").place(x=80 , y=60)
+tk.Label(programme , text="Password" , background="#176cd4" , fg="white").place(x=80 , y=90)
+tk.Button(programme , text="Login" , bg="#176cd4" , fg="white" , command=login).place(x=375 , y=120)
+programme.bind('<Return>' , login)
 
-Entrée1 = ttk.Entry(programme, width=50, textvariable=name)
-Entrée2 = ttk.Entry(programme, width=50, textvariable=password)
-Entrée1.place(x=250,y=60)
-Entrée2.place(x=250,y=90)
-tk.Label(programme, text="Email",background = "#176cd4",fg ="white").place(x=80,y=60)
-tk.Label(programme, text="Password",background = "#176cd4",fg ="white").place(x=80,y=90)
-tk.Button(programme, text="Login",bg="#176cd4",fg ="white", command=login).place(x=375,y=120)
-programme.bind('<Return>', login) 
-
-Entrée3 = ttk.Entry(programme, width=50, textvariable=name1)
-Entrée4 = ttk.Entry(programme, width=50, textvariable=password1)
-Entrée3.place(x=250, y=200)
-Entrée4.place(x=250, y=230)
-tk.Label(programme, text="Email",background = "#e6092a",fg ="white" ).place(x=80,y=200)
-tk.Label(programme, text="Password" ,background = "#e6092a",fg ="white").place(x=80, y=230)
-tk.Button(programme, text="Signup",bg="#e6092a",fg ="white", command=signup).place(x=375, y=260)
-programme.bind('<Return>', signup) 
-
-
+Entrée3 = ttk.Entry(programme , width=50 , textvariable=Name1)
+Entrée4 = ttk.Entry(programme , width=50 , textvariable=Password1)
+Entrée3.place(x=250 , y=200)
+Entrée4.place(x=250 , y=230)
+tk.Label(programme , text="Email" , background="#e6092a" , fg="white").place(x=80 , y=200)
+tk.Label(programme , text="Password" , background="#e6092a" , fg="white").place(x=80 , y=230)
+tk.Button(programme , text="Signup" , bg="#e6092a" , fg="white" , command=signup).place(x=375 , y=260)
+programme.bind('<Return>' , signup)
 
 programme.mainloop()
