@@ -1,0 +1,132 @@
+import tkinter as tk
+import pandas as pd
+from tkinter import ttk
+import csv
+from datetime import datetime
+
+
+User_info='user_info.csv'
+
+Fichier1=open(User_info,'r')
+Read= csv.reader(Fichier1)
+U_inf=[]
+for row in Read:
+    U_inf.append(row)
+print(U_inf)
+Fichier1.close()
+programme = tk.Tk()
+programme.geometry('700x400')
+programme.title("Menu")
+
+password = tk.StringVar()
+name = tk.StringVar()
+password1= tk.StringVar()
+name1= tk.StringVar()
+
+def User_inf():
+    User_info='user_info.csv'
+
+    Fichier1=open(User_info,'r')
+    Read= csv.reader(Fichier1)
+    U_inf=[]
+    for row in Read:
+        U_inf.append(row)
+    Fichier1.close()
+    return U_inf
+
+def login():
+    U_inf=User_inf()
+    Password= Entrée2.get()
+    Name= Entrée1.get()
+    for i in range(len(U_inf)):
+        print(U_inf[i][1])
+        print(Name)
+        if Name==U_inf[i][1] and Password==U_inf[i][2]:
+            ttk.Label(programme, text="Bienvenue dans la matrice",background = "#89ed80").place(x=330,y=160)
+            date=datetime.now().date()
+            time=datetime.now().time()
+            Log=open('user_login.csv','a',newline='',encoding='utf_8')
+            Write= csv.writer(Log)
+            Write.writerow([U_inf[i][0],U_inf[i][1],date,time])
+            Log.close()
+
+            break
+        else:
+
+            ttk.Label(programme, text="Pillule rouge",background = "#ff2626").place(x=365,y=160)
+
+
+
+password = tk.StringVar()
+name = tk.StringVar()
+
+
+def signup():
+    U_inf=User_inf()
+    Password1=Entrée4.get()
+    Email1=Entrée3.get()
+    for i in range(len(U_inf)):
+        print(U_inf[i][1])
+        print(Email1)
+        if len(Password1)>=6 and len(Password1)<=12:
+            if Email1==U_inf[i][1]:
+                print("Email deja utilisé")
+                break
+                
+            else:
+                print("Utilisateur enregistré")
+                Sign=open('user_info.csv','a',newline='',encoding='utf_8')
+                Write1=csv.writer(Sign)
+                Write1.writerow([len(U_inf),Email1,Password1])
+                Sign.close()
+                break
+             
+        else:
+            print("Mdp doit faire entre 6 et 12 caractères")
+            break
+
+label = tk.Label(programme,text='FLIGHT ANALYSES SYSTEM')
+label.configure(font=("Courier", 16, "italic"))
+label.place(x=255, y=10)
+
+Entrée1 = ttk.Entry(programme, width=50, textvariable=name)
+Entrée2 = ttk.Entry(programme, width=50, textvariable=password)
+Entrée1.place(x=250,y=60)
+Entrée2.place(x=250,y=90)
+tk.Label(programme, text="Email",background = "#176cd4",fg ="white").place(x=80,y=60)
+tk.Label(programme, text="Password",background = "#176cd4",fg ="white").place(x=80,y=90)
+tk.Button(programme, text="Login",bg="#176cd4",fg ="white", command=login).place(x=375,y=120)
+programme.bind('<Return>', login) 
+
+Entrée3 = ttk.Entry(programme, width=50, textvariable=name1)
+Entrée4 = ttk.Entry(programme, width=50, textvariable=password1)
+Entrée3.place(x=250, y=200)
+Entrée4.place(x=250, y=230)
+tk.Label(programme, text="Email",background = "#e6092a",fg ="white" ).place(x=80,y=200)
+tk.Label(programme, text="Password" ,background = "#e6092a",fg ="white").place(x=80, y=230)
+tk.Button(programme, text="Signup",bg="#e6092a",fg ="white", command=signup).place(x=375, y=260)
+programme.bind('<Return>', signup) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+programme.mainloop()
